@@ -543,7 +543,9 @@ class CaldavStorage(DavStorage):
         for caldavfilter in caldavfilters:
             xml = data.format(caldavfilter=caldavfilter)
             for href, etag in self._list(xml):
-                assert href not in hrefs
+                if href in hrefs:
+                    dav_logger.warn("Duplicate href encountered: %s", href)
+                    continue
                 hrefs.add(href)
                 yield href, etag
 
