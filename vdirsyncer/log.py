@@ -26,6 +26,8 @@ class ColorFormatter(logging.Formatter):
             if level in self.colors:
                 prefix = click.style('{}: '.format(level),
                                      **self.colors[level])
+                if not isinstance(record.msg, basestring):
+                    record.msg = str(record.msg)
                 record.msg = prefix + record.msg
 
         return logging.Formatter.format(self, record)
